@@ -57,8 +57,7 @@ CREATE TABLE movement (
     id              INTEGER GENERATED ALWAYS as IDENTITY(START with 1 INCREMENT by 1) NOT NULL,
     waybill_number  VARCHAR2(100) NOT NULL,
     waybill_date    DATE DEFAULT SYSDATE NOT NULL,
-    operation_type  SMALLINT NOT NULL,
-    books_count     INTEGER NOT NULL
+    operation_type  SMALLINT NOT NULL
 );
 
 ALTER TABLE movement ADD CONSTRAINT movement_pk PRIMARY KEY ( id );
@@ -101,35 +100,43 @@ ALTER TABLE store ADD CONSTRAINT store_pk PRIMARY KEY ( book_id,
 
 ALTER TABLE move
     ADD CONSTRAINT move_book_fk FOREIGN KEY ( book_id )
-        REFERENCES book ( id );
+        REFERENCES book ( id )
+        ON DELETE CASCADE;
 
 ALTER TABLE move
     ADD CONSTRAINT move_movement_fk FOREIGN KEY ( movement_id )
-        REFERENCES movement ( id );
+        REFERENCES movement ( id )
+        ON DELETE CASCADE;
 
 ALTER TABLE receive
     ADD CONSTRAINT receive_movement_fk FOREIGN KEY ( movement_id )
-        REFERENCES movement ( id );
+        REFERENCES movement ( id )
+        ON DELETE CASCADE;
 
 ALTER TABLE receive
     ADD CONSTRAINT receive_seller_fk FOREIGN KEY ( seller_id )
-        REFERENCES seller ( id );
+        REFERENCES seller ( id )
+        ON DELETE SET NULL;
 
 ALTER TABLE send
     ADD CONSTRAINT send_movement_fk FOREIGN KEY ( movement_id )
-        REFERENCES movement ( id );
+        REFERENCES movement ( id )
+        ON DELETE CASCADE;
 
 ALTER TABLE send
     ADD CONSTRAINT send_seller_fk FOREIGN KEY ( seller_id )
-        REFERENCES seller ( id );
+        REFERENCES seller ( id )
+        ON DELETE SET NULL;
 
 ALTER TABLE store
     ADD CONSTRAINT store_book_fk FOREIGN KEY ( book_id )
-        REFERENCES book ( id );
+        REFERENCES book ( id )
+        ON DELETE CASCADE;
 
 ALTER TABLE store
     ADD CONSTRAINT store_seller_fk FOREIGN KEY ( seller_id )
-        REFERENCES seller ( id );
+        REFERENCES seller ( id )
+        ON DELETE SET NULL;
 
 INSERT ALL
 INTO book (name, author, publisher, price_input, price_output, count)
@@ -145,8 +152,8 @@ VALUES ('seller1', 'address1', 7);
 INSERT INTO seller (name, address)
 VALUES ('seller2', 'address2');
 
-INSERT INTO movement (waybill_number, operation_type, books_count)
-VALUES ('01000', 1, 5);
+INSERT INTO movement (waybill_number, operation_type)
+VALUES ('01000', 1);
 
 INSERT ALL
 INTO store (book_id, seller_id, count)
