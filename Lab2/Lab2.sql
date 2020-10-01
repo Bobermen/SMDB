@@ -28,6 +28,12 @@ CREATE TABLE book (
 
 ALTER TABLE book ADD CONSTRAINT book_pk PRIMARY KEY ( id );
 
+CREATE INDEX BOOK_NAME_IND 
+ON book(name);
+
+CREATE INDEX BOOK_AUTHOR_IND 
+ON book(author);
+
 CREATE SEQUENCE book_sq
 START WITH 1 
 INCREMENT BY 1 
@@ -62,6 +68,9 @@ CREATE TABLE movement (
 
 ALTER TABLE movement ADD CONSTRAINT movement_pk PRIMARY KEY ( id );
 
+CREATE INDEX MOVEMENT_WAYBILLNUMBER_IND
+ON movement(waybill_number);
+
 CREATE TABLE receive (
     seller_id    INTEGER NOT NULL,
     movement_id  INTEGER NOT NULL
@@ -80,6 +89,9 @@ CREATE TABLE seller (
 ALTER TABLE seller ADD CHECK ( percent BETWEEN 5 AND 100 );
 
 ALTER TABLE seller ADD CONSTRAINT seller_pk PRIMARY KEY ( id );
+
+CREATE INDEX SELLER_ADDRESS_IND
+ON seller(address);
 
 CREATE TABLE send (
     seller_id    INTEGER NOT NULL,
